@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>START.</title>
+<meta name="description" content="やることを、5分だけ始めるためのアプリ">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#F7F4ED">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="START.">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+
+<main id="app">
+
+  <!-- 1. ホーム。最初に見えるものはSTARTだけ -->
+  <section class="screen" data-screen="home" hidden>
+    <header class="brand">
+      <h1>START<span class="brand-dot">.</span></h1>
+      <p class="brand-sub">まず、5分だけ</p>
+    </header>
+
+    <button class="start-button" type="button" data-action="begin">
+      <span class="start-button-label">START</span>
+    </button>
+
+    <p class="count-line" data-role="count-line"></p>
+
+    <section class="recent" data-role="recent" hidden>
+      <h2 class="recent-title">最近始めたもの</h2>
+      <ul class="recent-list" data-role="recent-list"></ul>
+    </section>
+  </section>
+
+  <!-- 2. 何を始める？ -->
+  <section class="screen" data-screen="task" hidden>
+    <button class="back" type="button" data-action="back" aria-label="戻る">← 戻る</button>
+    <h2 class="question">何を始める？</h2>
+    <input class="text-input" type="text" data-role="task-input"
+           placeholder="レポートを書く" autocomplete="off" enterkeyhint="next" maxlength="60">
+    <p class="hint" data-role="task-hint">&nbsp;</p>
+    <button class="primary" type="button" data-action="task-next">次へ</button>
+  </section>
+
+  <!-- 3. どれくらいやる？ ＋ やる気モード（任意） -->
+  <section class="screen" data-screen="duration" hidden>
+    <button class="back" type="button" data-action="back" aria-label="戻る">← 戻る</button>
+    <h2 class="question">どれくらいやる？</h2>
+    <div class="durations" data-role="durations" role="radiogroup" aria-label="時間を選ぶ">
+      <button class="duration duration-recommended" type="button" role="radio" data-minutes="5" aria-checked="true">
+        <span class="duration-value">5</span><span class="duration-unit">分</span>
+        <span class="duration-note">まずはこれで</span>
+      </button>
+      <button class="duration" type="button" role="radio" data-minutes="15" aria-checked="false">
+        <span class="duration-value">15</span><span class="duration-unit">分</span>
+      </button>
+      <button class="duration" type="button" role="radio" data-minutes="30" aria-checked="false">
+        <span class="duration-value">30</span><span class="duration-unit">分</span>
+      </button>
+    </div>
+
+    <div class="mood">
+      <p class="mood-title">いまの調子は？<span class="optional">（任意）</span></p>
+      <div class="mood-row" data-role="moods" role="radiogroup" aria-label="やる気モード">
+        <button class="mood-chip" type="button" role="radio" data-mood="余裕" aria-checked="false">余裕</button>
+        <button class="mood-chip" type="button" role="radio" data-mood="普通" aria-checked="false">普通</button>
+        <button class="mood-chip" type="button" role="radio" data-mood="しんどい" aria-checked="false">しんどい</button>
+        <button class="mood-chip" type="button" role="radio" data-mood="何もしたくない" aria-checked="false">何もしたくない</button>
+      </div>
+    </div>
+
+    <button class="primary" type="button" data-action="duration-next">次へ</button>
+  </section>
+
+  <!-- 4. まず、これだけやる -->
+  <section class="screen" data-screen="step" hidden>
+    <button class="back" type="button" data-action="back" aria-label="戻る">← 戻る</button>
+    <h2 class="question">まず、これだけやる</h2>
+    <p class="lead">ばかばかしいくらい小さくていい</p>
+    <input class="text-input" type="text" data-role="step-input"
+           placeholder="レポートのファイルを開く" autocomplete="off" enterkeyhint="go" maxlength="60">
+    <button class="start-button start-button-small" type="button" data-action="start">
+      <span class="start-button-label">START</span>
+    </button>
+    <button class="ghost" type="button" data-action="start">決めずに始める</button>
+  </section>
+
+  <!-- 5. タイマー -->
+  <section class="screen screen-timer" data-screen="timer" hidden>
+    <p class="running-task" data-role="running-task"></p>
+    <p class="running-step" data-role="running-step"></p>
+    <p class="remaining" data-role="remaining" aria-live="off">05:00</p>
+    <div class="timer-controls">
+      <button class="secondary" type="button" data-action="toggle-pause" data-role="pause-button">一時停止</button>
+    </div>
+    <button class="ghost ghost-quiet" type="button" data-action="finish-early">ここまでにする</button>
+  </section>
+
+  <!-- 6. 完了 -->
+  <section class="screen" data-screen="done" hidden>
+    <p class="done-mark">🌱</p>
+    <h2 class="done-title" data-role="done-title">5分やった！</h2>
+    <p class="done-sub">それでOK</p>
+    <p class="count-line" data-role="done-count"></p>
+    <button class="primary" type="button" data-action="again">もう<span data-role="again-minutes">5</span>分やる</button>
+    <button class="ghost" type="button" data-action="stop-today">今日は終了する</button>
+  </section>
+
+  <!-- 7. 終了 -->
+  <section class="screen" data-screen="bye" hidden>
+    <p class="done-mark">🌙</p>
+    <h2 class="done-title">おつかれさま</h2>
+    <p class="done-sub" data-role="bye-sub">始められたことが、いちばん大きい</p>
+    <button class="primary" type="button" data-action="home">ホームへ</button>
+  </section>
+
+</main>
+
+<p class="notice" data-role="notice" hidden></p>
+
+<div class="install-hint" data-role="install-hint" hidden>
+  <p class="install-title">ホーム画面に追加すると使いやすくなります</p>
+  <p class="install-body">共有ボタン → 「ホーム画面に追加」</p>
+  <button class="ghost" type="button" data-action="dismiss-install">わかった</button>
+</div>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
